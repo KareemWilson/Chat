@@ -13,7 +13,7 @@ if (btn) {
       name: name.value,
     });
     message.value = "";
-    console.log(message, socket);
+    console.log(message);
   });
 }
 if (message) {
@@ -24,7 +24,7 @@ if (message) {
 
 socket.on("message", (data) => {
   answer.innerHTML = "";
-  output.innerHTML += "<p>" + data.name + ":" + data.message + "</p>";
+  output.innerHTML += "<p>" + data.name + ": " + data.message + "</p>";
 });
 
 socket.on("typing", (data) => {

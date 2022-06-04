@@ -3,7 +3,7 @@ const socket = require("socket.io");
 const app = express();
 
 app.use(express.static("public"));
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 8080;
 const server = app.listen(PORT, () => {
   console.log(`Our app is running on port ${PORT}`);
 });
