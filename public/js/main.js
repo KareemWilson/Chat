@@ -11,21 +11,21 @@ const { username, room } = Qs.parse(location.search, {
 console.log(username, room);
 
 // Join chatroom
-socket.emit("joinRoom", () => {
-  console.log("joined in browser console");
-});
+socket.emit("joinRoom", { username, room });
 
 // Message from server
 
 socket.on("message", (message) => {
-  console.log(message);
   const div = document.createElement("div");
   div.classList.add("message");
-  const name = document.createElement("p");
-
+  const p = document.createElement("p");
+  p.classList.add("meta");
+  p.innerText = message.username;
+  p.innerHTML += `<span>${message.time}</span>`;
+  div.appendChild(p);
   const para = document.createElement("p");
-  para.classList.add("messageText");
-  para.innerText = message;
+  para.classList.add("text");
+  para.innerText = message.text;
   div.appendChild(para);
   document.querySelector(".chat-messages").appendChild(div);
 

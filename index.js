@@ -2,6 +2,13 @@ const path = require("path");
 const express = require("express");
 const socket = require("socket.io");
 const http = require("http");
+const { formatMessage } = require("./utils/message");
+const {
+  joinUser,
+  getCurrentUser,
+  userLeave,
+  getRoomUsers,
+} = require("./utils/users");
 
 const app = express();
 const server = http.createServer(app);
@@ -12,17 +19,29 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // run user connection
 io.on("connection", (socket) => {
-  console.log("Made socket connection", socket.id);
+  socket.on("joinRoom", ({ username, room }) => {
+    const user = joinUser(socket.id, username, room);
 
-  socket.on("joinRoom", () => {
-    console.log("joined");
+    socket.join(user.room);
+
     //welcome current user
-    socket.emit("message", "Welcome to my chat!");
+    socket.emit("message", formatMessage("kareem Bot", "Welcome to chat!"));
 
-    socket.on("chatMessage", (msg) => {
-      console.log(msg);
-      io.emit("message", msg);
-    });
+    //broadcast when user connect
+    socket.broadcast
+      .to(user.room)
+      .emit(
+        "message",
+        formatMessage("kareem Bot", `${user.username} joined to chat!`)
+      );
+
+    // Send users and room info
+  });
+  // Listen for chatMessage
+  socket.on("chatMessage", (msg) => {
+    const user = getCurrentUser(socket.id);
+
+    io.to(user.room).emit("message", formatMessage(user.username, msg));
   });
 });
 
