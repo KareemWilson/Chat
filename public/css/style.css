@@ -36,6 +36,7 @@ a {
   color: var(--dark-color-a);
   border: 0;
   font-size: 17px;
+  max-height: 40px;
 }
 
 /* Chat Page */
@@ -181,9 +182,5 @@ a {
 @media (max-width: 700px) {
   .chat-main {
     display: block;
-  }
-
-  .chat-sidebar {
-    display: none;
   }
 }

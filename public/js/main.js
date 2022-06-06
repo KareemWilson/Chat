@@ -9,8 +9,6 @@ const socket = io();
 const { username, room } = Qs.parse(location.search, {
   ignoreQueryPrefix: true,
 });
-console.log(username, room);
-
 // Join chatroom
 socket.emit("joinRoom", { username, room });
 
@@ -24,7 +22,6 @@ socket.on("roomUsers", ({ room, users }) => {
     li.innerHTML = user.username;
     userList.appendChild(li);
   });
-  console.log(users);
 });
 
 // Message from server
@@ -46,7 +43,6 @@ socket.on("message", (message) => {
   // Scroll down
   chatMessages.scrollTop = chatMessages.scrollHeight;
 });
-console.log(location);
 
 chatForm.addEventListener("submit", (e) => {
   e.preventDefault();
